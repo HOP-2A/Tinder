@@ -14,4 +14,86 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String   @id @default(nanoid())
+  firstName  String
+  lastName   String
+  username   String   @unique
+  email      String   @unique
+  password   String
+  profilePic String?
+  hobbies    String[]
+  blocked    String[]
+  createdAt  DateTime @default(now())
 
+  posts        Post[]
+  swipesSent   Swipe[] @relation("SwipesSent")
+  swipesRecv   Swipe[] @relation("SwipesReceived")
+  likes        Like[]
+
+  userAMatches Match[] @relation("UserA_Matches")
+  userBMatches Match[] @relation("UserB_Matches")
+}
+
+model Post {
+  id        String   @id @default(nanoid())
+  images    String[]
+  caption   String?
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  likes Like[]
+}
+
+model Like {
+  id String @id @default(nanoid())
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Swipe {
+  id        String   @id @default(nanoid())
+  isLiked   Boolean
+  createdAt DateTime @default(now())
+
+  fromUserId String
+  fromUser   User   @relation("SwipesSent", fields: [fromUserId], references: [id])
+
+  toUserId String
+  toUser   User   @relation("SwipesReceived", fields: [toUserId], references: [id])
+}
+
+model Match {
+  id        String   @id @default(nanoid())
+  createdAt DateTime @default(now())
+
+  userAId String
+  userA   User   @relation("UserA_Matches", fields: [userAId], references: [id])
+
+  userBId String
+  userB   User   @relation("UserB_Matches", fields: [userBId], references: [id])
+
+  placeId String?
+  place   Place?  @relation(fields: [placeId], references: [id])
+}
+
+
+model Place {
+  id         String   @id @default(nanoid())
+  phone      String?
+  categories String[]
+  location   String
+  facebook   String?
+  instagram  String?
+  createdAt  DateTime @default(now())
+
+  matches Match[]
+}
