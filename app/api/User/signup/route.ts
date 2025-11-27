@@ -1,9 +1,6 @@
 import { prisma } from "@/lib/db"
 import bcrypt from "bcrypt"
 import { NextResponse } from "next/server"
-import jwt from "jsonwebtoken"
-const JWT_SECRET= process.env.JWT_SECRET
-
 
 export async function POST(req:Request) {
     const {username,firstName, lastName, email,password}= await req.json()
@@ -11,15 +8,21 @@ export async function POST(req:Request) {
         return NextResponse.json("all fields should be filled")
     }
 
-    const exisstingEmail =await prisma.user.findUnique({
+    const existingEmail =await prisma.user.findUnique({
         where:{email}
     })
 
     const hashedPassword = await bcrypt.hash(password,10);
 
-    if(exisstingEmail) return NextResponse.json("email exissting")
+        if (existingEmail) {
+  return NextResponse.json(
+    { message: "email existing" },
+    { status: 400 }
+  );
+}
 
-    const NewUser =  prisma.user.create({
+
+    const NewUser = await  prisma.user.create({
         data:{
             username,   
             firstName,
@@ -28,10 +31,9 @@ export async function POST(req:Request) {
             password: hashedPassword
         }
     })
+    console.log(NewUser);
+    
+    return NextResponse.json({message:"amjilttai"},{status:200})
 
-    const accessToken = jwt.sign({ data: NewUser }, JWT_SECRET, {
-      expiresIn: "12h",
-    });
-
-    return NextResponse.json(`userCreate success ${NewUser}`)
+    // return NextResponse.json({message:NewUser},{status:200})   
 }
