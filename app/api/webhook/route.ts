@@ -35,9 +35,7 @@ export async function POST(req: Request) {
   /* ------------------------- USER CREATED ------------------------ */
   if (eventType === "user.created") {
     await prisma.user.create({
-      where: { clerkId: user.id },
-      update: {},
-      create: {
+      data: {
         clerkId: user.id,
         email,
         firstName,
