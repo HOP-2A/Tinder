@@ -43,23 +43,5 @@ export async function POST(req: Request) {
     });
   }
 
-  /* ------------------------- USER UPDATED ------------------------ */
-  if (eventType === "user.updated") {
-    await prisma.user.update({
-      where: { clerkId: user.id },
-      data: {
-        email,
-        firstName,
-      },
-    });
-  }
-
-  /* ------------------------- USER DELETED ------------------------ */
-  if (eventType === "user.deleted") {
-    await prisma.user.delete({
-      where: { clerkId: user.id },
-    });
-  }
-
   return NextResponse.json({ ok: true });
 }
