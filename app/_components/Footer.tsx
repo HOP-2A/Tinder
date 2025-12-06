@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export const Footer = () => {
   const { push } = useRouter();
   return (
-    <div className="flex justify-around bottom-0 fixed left-0 right-0">
+    <div className="flex justify-around bottom-0 fixed left-0 right-0 text-white">
       <HeartPlus onClick={() => push("/")} />
       <SearchCheck onClick={() => push("Search")} />
       <Atom onClick={() => push("/Match")} />
