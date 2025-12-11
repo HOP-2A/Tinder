@@ -13,13 +13,17 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { upload } from "@vercel/blob/client";
+import { useUser } from "@clerk/nextjs";
+import { useAuth } from "@/provider/authProvider";
 
 export default function PostCreate() {
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
+  const { user: clerkUser } = useUser();
+  const { user } = useAuth(clerkUser?.id);
   const [caption, setCaption] = useState("");
   const [imageurl, setImageurl] = useState("");
-
+  console.log(user);
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
@@ -41,7 +45,7 @@ export default function PostCreate() {
       toast.error("Image upload failed. Try again.");
     }
   };
-  const postUusgeh = async () => {
+  const postUusgeh = async (userId: string) => {
     if (!imageurl) {
       toast.error("Please upload an image first.");
       return;
@@ -54,7 +58,7 @@ export default function PostCreate() {
       body: JSON.stringify({
         images: imageurl,
         caption,
-        //   userId: user?._id,
+        userId: userId,
       }),
     });
     if (response.ok) {
@@ -121,7 +125,7 @@ export default function PostCreate() {
 
         <CardFooter>
           <Button
-            onClick={postUusgeh}
+            onClick={() => postUusgeh(user?.id)}
             className="w-full bg-cyan-600 hover:bg-pink-600 shadow-neon transition-transform duration-300 hover:scale-105"
           >
             Create Post
