@@ -6,18 +6,23 @@ export async function POST(req: Request) {
   console.log(body);
   console.log(userId);
 
-  if (!images || !caption || !userId) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  if (!images || !caption || !user) {
     return NextResponse.json({ message: "duttsaaa" }, { status: 400 });
   }
-  await prisma.post.create({
+
+  const createdPost = await prisma.post.create({
     data: {
       images: Array.isArray(images) ? images : [images],
       caption,
-      userId,
+      userId: userId,
     },
   });
-  return NextResponse.json({ message: "post created" }, { status: 200 });
+  return NextResponse.json({ message: createdPost }, { status: 200 });
 }
+
 export async function GET() {
   const allPost = await prisma.post.findMany();
   return NextResponse.json({ message: allPost }, { status: 200 });
