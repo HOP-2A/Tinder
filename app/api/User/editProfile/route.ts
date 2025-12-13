@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { NextResponse } from "next/server";
 
 export const PUT = async (req: Request) => {
   try {
@@ -48,4 +49,8 @@ export const PUT = async (req: Request) => {
       { status: 500 }
     );
   }
-};
+}
+export const GET = async(req:Request)=>{
+  const user = await prisma.user.findMany()
+  return NextResponse.json({ message: user }, { status: 200 });
+}
