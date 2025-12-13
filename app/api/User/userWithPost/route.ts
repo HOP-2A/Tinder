@@ -5,11 +5,7 @@ export async function GET(_req: Request,) {
   try {
     const user = await prisma.user.findMany({
       include: {
-        posts: {
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
+        posts : true
       },
     });
 
@@ -22,7 +18,6 @@ export async function GET(_req: Request,) {
 
     return NextResponse.json(user);
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
