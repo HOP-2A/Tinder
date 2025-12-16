@@ -1,63 +1,29 @@
 "use client";
-// import { useUser } from "@clerk/nextjs";
-// import { Footer } from "./_components/Footer";
-// import { useRouter } from "next/navigation";
-// import { useEffect } from "react";
-// import React, { useState } from "react";
-// import { Heart, X, Star } from "lucide-react";
-
-// export default function Home() {
-//   const { push } = useRouter();
-//   const { isSignedIn, isLoaded } = useUser();
-
-//   useEffect(() => {
-//     if (!isLoaded) return; // wait until clerk loads
-
-//     if (isSignedIn === false) {
-//       push("/heloo");
-//     }
-//   }, [isLoaded, isSignedIn, push]);
-
-//   return (
-//     <div className="h-screen bg-cover bg-center bg-black">
-
-//       <div>
-//         <Footer />
-//       </div>
-//     </div>
-//   );
-// }
-
+import { useUser } from "@clerk/nextjs";
+import { Footer } from "./_components/Footer";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { Heart, X, Star } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
-import { Heart, X } from "lucide-react";
 
-const users = [
-  {
-    id: 1,
-    name: "Anna",
-    age: 19,
-    img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
-  },
-  {
-    id: 2,
-    name: "Mike",
-    age: 21,
-    img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
-  },
-  {
-    id: 3,
-    name: "Saraa",
-    age: 20,
-    img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
-  },
-];
+type User = {
+  id: string;
+  clerkId: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  profilePic: string;
+};
 
 export default function SwipePage() {
+  const [usersData, setUsersData] = useState<User[]>([]);
   const [index, setIndex] = useState(0);
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
-
+  const { push } = useRouter();
+  const { isSignedIn, isLoaded } = useUser();
   const handleDragEnd = (_event: unknown, info: { offset: { x: number } }) => {
     if (!info || !info.offset) return;
 
@@ -74,7 +40,29 @@ export default function SwipePage() {
     x.set(0);
   };
 
-  const user = users[index];
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (isSignedIn === false) {
+      push("/heloo");
+    }
+  }, [isLoaded, isSignedIn, push]);
+
+  useEffect(() => {
+    const userFetch = async () => {
+      const res = await fetch("/api/User/userWithPost", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const users = await res.json();
+      setUsersData(users);
+    };
+    userFetch();
+  }, []);
+
+  const user = usersData[index];
 
   if (!user) {
     return (
@@ -95,19 +83,16 @@ export default function SwipePage() {
           style={{
             x,
             rotate,
-            backgroundImage: `url(${user.img})`,
+            backgroundImage: `url(${user.profilePic})`,
           }}
           className="absolute w-full h-full rounded-3xl shadow-xl bg-cover bg-center"
         >
-          <div className="absolute bottom-0 w-full p-4 text-white bg-gradient-to-t from-black/70 to-transparent rounded-b-3xl">
-            <h2 className="text-xl font-semibold">
-              {user.name}, {user.age}
-            </h2>
+          <div className="absolute bottom-0 w-full p-4 text-white bg-linear-to-t from-black/70 to-transparent rounded-b-3xl">
+            <h2 className="text-xl font-semibold">{user.username}</h2>
           </div>
         </motion.div>
       </div>
 
-      {/* Buttons */}
       <div className="flex gap-8 mt-6">
         <button
           onClick={() => swipe("left")}
@@ -122,6 +107,7 @@ export default function SwipePage() {
           <Heart className="text-green-500" />
         </button>
       </div>
+      <Footer />
     </div>
   );
 }
