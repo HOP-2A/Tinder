@@ -3,9 +3,10 @@ import { useUser } from "@clerk/nextjs";
 import { Footer } from "./_components/Footer";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Heart, X, Star } from "lucide-react";
+import { Heart, X } from "lucide-react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
+import { useAuth } from "@/provider/authProvider";
 
 type User = {
   id: string;
@@ -24,22 +25,35 @@ export default function SwipePage() {
   const rotate = useTransform(x, [-200, 200], [-15, 15]);
   const { push } = useRouter();
   const { isSignedIn, isLoaded } = useUser();
+  const { user: clerkUser } = useUser();
+  const { user } = useAuth(clerkUser?.id);
+
+  const filterData = usersData.filter((item) => item.id !== user?.id);
+  console.log(filterData);
+
+  const users = filterData[index];
+
   const handleDragEnd = (_event: unknown, info: { offset: { x: number } }) => {
     if (!info || !info.offset) return;
 
     if (info.offset.x > 120) {
-      swipe("right");
+      HandleSwipe(users.id, true);
     } else if (info.offset.x < -120) {
-      swipe("left");
+      HandleSwipe(users.id, false);
     }
   };
 
-  const swipe = (dir: string) => {
-    console.log("swiped:", dir);
+  const HandleSwipe = async (toUserId: string, isLike: boolean) => {
     setIndex((prev) => prev + 1);
     x.set(0);
+    await fetch("/api/Swipe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fromUserId: user?.id, toUserId, isLiked: isLike }),
+    });
   };
-
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -62,18 +76,16 @@ export default function SwipePage() {
     userFetch();
   }, []);
 
-  const user = usersData[index];
-
   if (!user) {
     return (
-      <div className="h-screen flex items-center justify-center text-gray-400">
+      <div className="h-screen flex items-center justify-center text-gray-400 bg-gradient-to-b from-pink-500 to-white">
         No more users
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-b from-pink-100 to-white">
+    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-b from-pink-400 to-white">
       <div className="relative w-[90vw] max-w-md h-[65vh]">
         <motion.div
           drag="x"
@@ -83,31 +95,31 @@ export default function SwipePage() {
           style={{
             x,
             rotate,
-            backgroundImage: `url(${user.profilePic})`,
+            backgroundImage: `url(${users?.profilePic})`,
           }}
           className="absolute w-full h-full rounded-3xl shadow-xl bg-cover bg-center"
         >
           <div className="absolute bottom-0 w-full p-4 text-white bg-linear-to-t from-black/70 to-transparent rounded-b-3xl">
-            <h2 className="text-xl font-semibold">{user.username}</h2>
+            <h2 className="text-xl font-semibold">{users?.username}</h2>
           </div>
         </motion.div>
       </div>
 
       <div className="flex gap-8 mt-6">
         <button
-          onClick={() => swipe("left")}
-          className="w-14 h-14 bg-white rounded-full shadow flex items-center justify-center"
+          onClick={() => HandleSwipe(users.id, false)}
+          className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center"
         >
           <X className="text-red-500" />
         </button>
         <button
-          onClick={() => swipe("right")}
+          onClick={() => HandleSwipe(users.id, true)}
           className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center"
         >
           <Heart className="text-green-500" />
         </button>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }
