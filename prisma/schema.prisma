@@ -22,6 +22,7 @@ model User {
   username   String   @unique @default(nanoid())
   email      String   @unique
   profilePic String?
+  age        String
   hobbies    String[]
   blocked    String[]
   createdAt  DateTime @default(now())
@@ -92,6 +93,7 @@ model Place {
   location   String
   facebook   String?
   instagram  String?
+  Pictures   String[]
   createdAt  DateTime @default(now())
 
   matches Match[]

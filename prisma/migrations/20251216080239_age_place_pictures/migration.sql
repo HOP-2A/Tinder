@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Place" ALTER COLUMN "Pictures" DROP DEFAULT;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "age" DROP DEFAULT;
