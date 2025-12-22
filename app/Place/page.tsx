@@ -47,7 +47,7 @@ export default function Home() {
         {places.map((place) => (
           <Card
             key={place.id}
-            onClick={() => router.push(`/${place.id}`)}
+            onClick={() => router.push(`/Place/${place.id}`)}
             className="w-[260px] cursor-pointer bg-white border border-pink-100
                        rounded-2xl shadow-md transition-all duration-300
                        hover:shadow-xl hover:-translate-y-2"
