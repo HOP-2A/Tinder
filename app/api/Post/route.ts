@@ -24,6 +24,8 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const allPost = await prisma.post.findMany();
+  const allPost = await prisma.post.findMany({
+    include: { user: true },
+  });
   return NextResponse.json({ message: allPost }, { status: 200 });
 }
