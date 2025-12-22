@@ -76,7 +76,7 @@ export default function SwipePage() {
     userFetch();
   }, []);
 
-  if (!user) {
+  if (!users) {
     return (
       <div className="h-screen flex items-center justify-center text-gray-400 bg-linear-to-b from-pink-500 to-white">
         No more users
