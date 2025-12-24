@@ -34,6 +34,9 @@ model User {
 
   userAMatches Match[] @relation("UserA_Matches")
   userBMatches Match[] @relation("UserB_Matches")
+
+  userADates Date[] @relation("UserA_Dates")
+  userBDates Date[] @relation("UserB_Dates")
 }
 
 model Post {
@@ -97,4 +100,21 @@ model Place {
   createdAt  DateTime @default(now())
 
   matches Match[]
+
+  dates Date[]
+}
+
+model Date {
+  id        String   @id @default(nanoid())
+  message   String?
+  createdAt DateTime @default(now())
+
+  userAId String
+  userA   User   @relation("UserA_Dates", fields: [userAId], references: [id])
+
+  userBId String
+  userB   User   @relation("UserB_Dates", fields: [userBId], references: [id])
+
+  placeId String
+  place   Place  @relation(fields: [placeId], references: [id])
 }

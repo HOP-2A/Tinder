@@ -4,6 +4,7 @@ import { useAuth } from "@/provider/authProvider";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Footer } from "../_components/Footer";
 
 type MatchUser = {
   id: string;
@@ -98,6 +99,7 @@ export default function Match() {
           })}
         </ul>
       </div>
+      <Footer />;
     </div>
   );
 }
