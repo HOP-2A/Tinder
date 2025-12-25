@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Footer } from "../../_components/Footer";
+import { Button } from "@/components/ui/button";
 
 type placetype = {
   id: string;
@@ -29,22 +30,22 @@ export default function Home() {
     getplace();
   }, [place]);
 
+  const pushToPlanDate = () => {
+    router.push(`/PlanDate/${place}`);
+  }
+
   return (
     <div className="min-h-screen bg-pink-50 px-6 py-10">
-      {/* Title */}
       <h1 className="text-4xl font-extrabold text-center text-pink-600 mb-8">
         {places?.facebook} 💕
       </h1>
 
-      {/* Info Card */}
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 space-y-5">
-        {/* Phone */}
         <div className="flex items-center gap-3">
           <span className="font-semibold text-pink-500">📞 Phone:</span>
           <span className="text-gray-700">{places?.phone}</span>
         </div>
 
-        {/* Categories */}
         <div className="flex items-center gap-3 flex-wrap">
           <span className="font-semibold text-pink-500">🏷 Categories:</span>
           {places?.categories.map((cat, index) => (
@@ -57,7 +58,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Location */}
         <div className="flex items-center gap-3">
           <span className="font-semibold text-pink-500">📍 Location:</span>
           <span
@@ -69,7 +69,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Image Gallery */}
       <div className="max-w-5xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {places?.Pictures.map((zurg, indx) => (
           <div
@@ -84,6 +83,7 @@ export default function Home() {
             />
           </div>
         ))}
+        <Button onClick={()=>pushToPlanDate()}>Plan Date</Button>
       </div>
 
       <Footer />
