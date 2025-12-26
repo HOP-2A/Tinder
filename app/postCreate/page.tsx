@@ -23,7 +23,6 @@ export default function PostCreate() {
   const { user } = useAuth(clerkUser?.id);
   const [caption, setCaption] = useState("");
   const [imageurl, setImageurl] = useState("");
-  console.log(user);
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
@@ -41,7 +40,7 @@ export default function PostCreate() {
       });
       setImageurl(uploaded.url);
       toast.success("Image uploaded successfully!");
-    } catch (err) {
+    } catch (error) {
       toast.error("Image upload failed. Try again.");
     }
   };
@@ -125,7 +124,7 @@ export default function PostCreate() {
 
         <CardFooter>
           <Button
-            onClick={() => postUusgeh(user?.id)}
+            onClick={() => postUusgeh(user?.id as string)}
             className="w-full bg-cyan-600 hover:bg-pink-600 shadow-neon transition-transform duration-300 hover:scale-105"
           >
             Create Post

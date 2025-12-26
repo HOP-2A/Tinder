@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const body = await req.json();
   const { images, caption, userId } = body;
-  console.log(body);
-  console.log(userId);
 
   const user = await prisma.user.findUnique({
     where: { id: userId },

@@ -9,7 +9,6 @@ import {
 import { MatchItem, MatchUser } from "./page";
 import { MoveRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Footer } from "../_components/Footer";
 export type placetype = {
   id: string;
@@ -23,10 +22,7 @@ export type placetype = {
 
 export const SecondStep = ({
   setStep,
-  otherUser,
-  myMatches,
   setSelectedPlace,
-  selectedPlace,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   otherUser?: MatchUser | null;
@@ -34,7 +30,6 @@ export const SecondStep = ({
   setSelectedPlace: React.Dispatch<React.SetStateAction<placetype | null>>;
   selectedPlace: placetype | null;
 }) => {
-  const router = useRouter();
   const [places, setPlaces] = useState<placetype[]>([]);
   useEffect(() => {
     const getplaces = async () => {
@@ -45,12 +40,12 @@ export const SecondStep = ({
     getplaces();
   }, []);
   return (
-    <div className="min-h-screen bg-pink-50 flex flex-col gap-10">
+    <div className="min-h-screen bg-gradient-to-b from-rose-300 via-peach-400  flex flex-col gap-10">
       <h1 className="text-center pt-10 text-4xl font-extrabold text-pink-500 drop-shadow-sm">
         Choose Your Perfect Date Place 💕
       </h1>
 
-      <div className="flex flex-wrap justify-center gap-5 px-6">
+      <div className="flex flex-wrap justify-center gap-5 px-6 ">
         {places.map((place) => (
           <Card
             key={place.id}
@@ -58,9 +53,9 @@ export const SecondStep = ({
               setStep(3);
               setSelectedPlace(place);
             }}
-            className="w-[260px] cursor-pointer bg-white border border-pink-100
+            className="w-[260px] cursor-pointer border border-pink-100
                        rounded-2xl shadow-md transition-all duration-300
-                       hover:shadow-xl hover:-translate-y-2"
+                       hover:shadow-xl hover:-translate-y-2 bg-rose-50"
           >
             <CardFooter className="p-0">
               <img

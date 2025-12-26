@@ -41,7 +41,7 @@ export default function DatesPage() {
   const currentUserId = user?.id;
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!currentUserId) return;
     const fetchDates = async () => {
       try {
         const res = await fetch("/api/Dates");
@@ -64,7 +64,7 @@ export default function DatesPage() {
   }, [currentUserId]);
 
   return (
-    <div className="min-h-screen bg-pink-100 py-8 px-4 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200 py-8 px-4 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-8 text-center text-pink-700">
         My Dates
       </h1>
@@ -72,7 +72,7 @@ export default function DatesPage() {
       {error ? (
         <p className="text-red-500 text-center">{error}</p>
       ) : dates.length > 0 ? (
-        <div className="flex flex-col items-center gap-8">
+        <div className="flex flex-wrap gap-6 justify-center">
           {dates.map((date) => {
             const otherUser =
               date.userA.id === currentUserId ? date.userB : date.userA;
@@ -105,7 +105,10 @@ export default function DatesPage() {
                       {date.message}
                     </p>
                   )}
-                  <p className="font-medium text-pink-500 mb-3 truncate underline cursor-pointer hover:text-pink-700" onClick={() => router.push(date.place!.location)}>
+                  <p
+                    className="font-medium text-pink-500 mb-3 truncate underline cursor-pointer hover:text-pink-700"
+                    onClick={() => router.push(date.place!.location)}
+                  >
                     {date.place.facebook}
                   </p>
                   {date.place.Pictures[0] && (

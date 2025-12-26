@@ -69,7 +69,6 @@ export default function Signup() {
     push("/login");
   };
 
-  console.log(inputValue);
   return (
     <div>
       <h1 className="text-5xl font-extrabold mb-16 text-cyan-400 drop-shadow-neon select-none">

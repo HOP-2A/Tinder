@@ -1,13 +1,10 @@
 import { useUser } from "@clerk/nextjs";
 import { MatchItem, MatchUser } from "./page";
 import { useAuth } from "@/provider/authProvider";
-import { useRouter } from "next/navigation";
 import { Footer } from "../_components/Footer";
-import { set } from "date-fns";
 
 export const FirstStep = ({
   setStep,
-  otherUser,
   myMatches,
   setOtherUser,
 }: {
@@ -16,17 +13,13 @@ export const FirstStep = ({
   myMatches: MatchItem[] | null;
   setOtherUser: React.Dispatch<React.SetStateAction<MatchUser | null>>;
 }) => {
-  const { push } = useRouter();
   const { user: clerkUser } = useUser();
   const { user } = useAuth(clerkUser?.id) as { user: MatchUser | null };
   const getOtherUser = (match: MatchItem) => {
     return match.userA.id === user?.id ? match.userB : match.userA;
   };
-  const handleChoosePlace = () => {
-    push("/Place");
-  };
   return (
-    <div className="min-h-screen bg-pink-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200 py-8">
       <div className="max-w-md mx-auto">
         <h1 className="text-2xl font-semibold mb-6 text-center text-pink-700">
           Your Matches
@@ -38,7 +31,7 @@ export const FirstStep = ({
             return (
               <li
                 key={match.id}
-                className="flex items-center justify-between p-4 bg-white rounded-xl shadow hover:shadow-md transition"
+                className="flex items-center justify-between p-4 bg-white rounded-xl shadow hover:shadow-md transition "
               >
                 <div className="flex items-center gap-4">
                   <img

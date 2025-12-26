@@ -1,5 +1,4 @@
 import {
-  ClerkProvider,
   SignInButton,
   SignUpButton,
   SignedIn,
@@ -39,13 +38,10 @@ export const Header = () => {
 
   return (
     <div className="flex justify-between ">
-      {" "}
       <div className="flex gap-10">
-        {" "}
         <h1 className="font-semibold text-4xl text-white ">LUMINATE</h1>{" "}
         <DropdownMenu>
           <DropdownMenuTrigger>
-            {" "}
             <h1 className="font-semibold text-2xl text-white ">CONTACT</h1>{" "}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -83,7 +79,6 @@ export const Header = () => {
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            {" "}
             <h1 className="font-semibold text-2xl text-white ">CREDITS</h1>{" "}
           </DropdownMenuTrigger>
           <DropdownMenuContent>

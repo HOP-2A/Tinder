@@ -29,7 +29,6 @@ export default function SwipePage() {
   const { user } = useAuth(clerkUser?.id);
 
   const filterData = usersData.filter((item) => item.id !== user?.id);
-  console.log(filterData);
 
   const users = filterData[index];
 
@@ -78,14 +77,15 @@ export default function SwipePage() {
 
   if (!users) {
     return (
-      <div className="h-screen flex items-center justify-center text-gray-400 bg-linear-to-b from-pink-500 to-white">
-        No more users
+      <div className="h-screen flex items-center justify-center text-gray-400 bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200">
+        <div>No more users</div>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="h-screen items-center bg-linear-to-b from-pink-400 to-white">
+    <div className="h-screen items-center bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200">
       <div className="text-white flex justify-end gap-3 ">
         <SignedIn>
           <UserButton />
@@ -116,13 +116,13 @@ export default function SwipePage() {
             onClick={() => HandleSwipe(users.id, false)}
             className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center"
           >
-            <X className="text-red-500" />
+            <X className="text-rose-500" />
           </button>
           <button
             onClick={() => HandleSwipe(users.id, true)}
             className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center"
           >
-            <Heart className="text-green-500" />
+            <Heart className="text-rose-400" />
           </button>
         </div>
         <Footer />

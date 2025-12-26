@@ -53,7 +53,6 @@ export default function Login() {
   const usreh = () => {
     push("/signup");
   };
-  console.log(inputValue);
   return (
     <div>
       {" "}
