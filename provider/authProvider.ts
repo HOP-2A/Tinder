@@ -6,7 +6,6 @@ export const useAuth = (clerkId: string | null | undefined) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    console.log(clerkId);
     if (clerkId) {
       const fetchUser = async () => {
         try {

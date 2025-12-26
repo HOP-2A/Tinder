@@ -4,8 +4,8 @@ import { HeartPlus } from "lucide-react";
 import { SearchCheck } from "lucide-react";
 import { Atom } from "lucide-react";
 import { CircleUser } from "lucide-react";
-import { MapPinned } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { MessageCircleHeart } from "lucide-react";
 export const Footer = () => {
   const { push } = useRouter();
   return (
@@ -13,7 +13,7 @@ export const Footer = () => {
       <HeartPlus onClick={() => push("/")} />
       <SearchCheck onClick={() => push("Search")} />
       <Atom onClick={() => push("/Match")} />
-      <MapPinned onClick={() => push("/Place")} />
+      <MessageCircleHeart onClick={() => push("/Dates")} />
       <CircleUser onClick={() => push("/Profile")} />
     </div>
   );
