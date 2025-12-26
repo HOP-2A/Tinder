@@ -1,9 +1,8 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function GET (req:Request, context: { params: { placeId: string } }) {
+export async function GET ( context: { params: { placeId: string } }) {
     const { placeId } = await context.params;
-    console.log(placeId)
     const place = await prisma.place.findUnique({
        where: {id: placeId},
     }) 

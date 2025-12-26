@@ -27,7 +27,6 @@ const Search = () => {
     };
     PostFetch();
   }, []);
-  console.log(posts);
 
   return (
     <div>
@@ -37,7 +36,6 @@ const Search = () => {
             key={post.id}
             className="bg-white rounded-2xl shadow border overflow-hidden"
           >
-            {/* USER HEADER */}
             <div className="flex items-center gap-3 p-4">
               <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
                 {post.user.profilePic ? (
@@ -62,7 +60,6 @@ const Search = () => {
               </div>
             </div>
 
-            {/* POST IMAGE */}
             {post.images?.length > 0 && (
               <div className="relative w-full aspect-square bg-black">
                 <img
@@ -73,14 +70,12 @@ const Search = () => {
               </div>
             )}
 
-            {/* ACTIONS */}
             <div className="flex items-center gap-5 p-4">
               <Heart className="w-6 h-6 cursor-pointer hover:text-red-500" />
               <MessageCircle className="w-6 h-6 cursor-pointer" />
               <Share className="w-6 h-6 cursor-pointer" />
             </div>
 
-            {/* CAPTION */}
             {post.caption && (
               <div className="px-4 pb-4">
                 <p className="text-sm">

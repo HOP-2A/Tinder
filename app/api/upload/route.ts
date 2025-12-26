@@ -15,9 +15,6 @@ export async function POST(request: Request): Promise<NextResponse> {
           tokenPayload: JSON.stringify({}),
         };
       },
-      onUploadCompleted: async ({ blob, tokenPayload }) => {
-        console.log("ajilaach", blob, tokenPayload);
-      },
     });
 
     return NextResponse.json(jsonResponse);

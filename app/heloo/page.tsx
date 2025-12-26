@@ -11,7 +11,7 @@ export default function Signup() {
   const { isSignedIn, isLoaded } = useUser();
 
   useEffect(() => {
-    if (!isLoaded) return; // wait until clerk loads
+    if (!isLoaded) return; 
 
     if (isSignedIn === true) {
       push("/");

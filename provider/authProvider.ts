@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react";
 
+type AuthUser = {
+  id: string;
+  clerkId: string;
+  email: string | null;
+  firstName: string;
+  lastName: string | null;
+  profilePic: string | null;
+  age: number | null;
+};
+
 export const useAuth = (clerkId: string | null | undefined) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

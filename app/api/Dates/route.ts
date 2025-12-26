@@ -11,12 +11,6 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json();
   const { userA, userB, place, message } = body;
-  // if (!userA || !userB || !place || !message) {
-  //   return NextResponse.json(
-  //     { error: "Missing required fields" },
-  //     { status: 400 }
-  //   );
-  // }
   const newDate = await prisma.date.create({
     data: {
       userAId: userA,

@@ -7,7 +7,6 @@ export const GET = async (
 ) => {
   const { clerkId } = await context.params;
 
-  console.log(clerkId, "dasdas");
 
   if (!clerkId) {
     return NextResponse.json({ error: "Missing clerkId" }, { status: 400 });
