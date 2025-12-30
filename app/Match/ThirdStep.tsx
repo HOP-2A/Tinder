@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useAuth } from "@/provider/authProvider";
 import { Input } from "@/components/ui/input";
+import { format } from "date-fns";
 
 export const ThirdStep = ({
   setStep,
@@ -54,14 +55,13 @@ export const ThirdStep = ({
             selected={day}
             onSelect={setDay}
             mode="single"
-            captionLayout="dropdown"
             className="rounded-xl border border-rose-200 shadow-sm bg-white"
           />
         </div>
 
         {day && (
           <p className="text-center text-sm text-gray-600">
-            📅 {day.toISOString().split("T")[0]}
+            📅 {day ? format(day, "yyyy-MM-dd") : ""}
           </p>
         )}
         <Input

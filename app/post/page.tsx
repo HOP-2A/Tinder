@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Heart, MessageCircle, Share } from "lucide-react";
+import { CirclePlus, Heart, MessageCircle, Share } from "lucide-react";
 import { User } from "../page";
 import { Footer } from "../_components/Footer";
+import { useRouter } from "next/navigation";
 
 type Post = {
   user: User;
@@ -13,14 +14,14 @@ type Post = {
 };
 
 const Search = () => {
+  const { push } = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
+
   useEffect(() => {
     const PostFetch = async () => {
       const res = await fetch("/api/Post", {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
       const Allposts = await res.json();
       setPosts(Allposts.message);
@@ -29,31 +30,37 @@ const Search = () => {
   }, []);
 
   return (
-    <div>
-      <div className="w-full max-w-md mx-auto space-y-6 pb-20">
+    <div className="min-h-screen bg-pink-50">
+      {" "}
+      <div className="flex justify-end pr-5 pt-5">
+        {" "}
+        <CirclePlus onClick={() => push("/postCreate")} />
+      </div>
+      <div className="w-full max-w-md mx-auto space-y-8 py-10 px-3">
         {posts?.map((post) => (
           <div
             key={post.id}
-            className="bg-white rounded-2xl shadow border overflow-hidden"
+            className="bg-white rounded-2xl shadow-md border border-pink-100 overflow-hidden"
           >
             <div className="flex items-center gap-3 p-4">
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
+              <div className="w-11 h-11 rounded-full overflow-hidden bg-pink-100 flex items-center justify-center">
                 {post.user.profilePic ? (
                   <img
                     src={post.user.profilePic.replace(/^"|"$/g, "")}
                     alt="profile"
-                    width={40}
-                    height={40}
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">
+                  <span className="text-xs text-pink-400 font-semibold">
                     N/A
-                  </div>
+                  </span>
                 )}
               </div>
+
               <div>
-                <p className="font-semibold text-sm">{post.user.username}</p>
+                <p className="font-semibold text-pink-600 text-sm">
+                  {post.user.username}
+                </p>
                 <p className="text-xs text-gray-400">
                   {new Date(post.createdAt).toLocaleDateString()}
                 </p>
@@ -61,25 +68,19 @@ const Search = () => {
             </div>
 
             {post.images?.length > 0 && (
-              <div className="relative w-full aspect-square bg-black">
+              <div className="relative w-full aspect-square bg-pink-100">
                 <img
                   src={post.images[0]}
                   alt="post"
-                  className="object-cover w-full h-fit "
+                  className="object-cover w-full h-full"
                 />
               </div>
             )}
 
-            <div className="flex items-center gap-5 p-4">
-              <Heart className="w-6 h-6 cursor-pointer hover:text-red-500" />
-              <MessageCircle className="w-6 h-6 cursor-pointer" />
-              <Share className="w-6 h-6 cursor-pointer" />
-            </div>
-
             {post.caption && (
-              <div className="px-4 pb-4">
-                <p className="text-sm">
-                  <span className="font-semibold mr-1">
+              <div className="px-4 pb-5 pt-2">
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  <span className="font-semibold text-pink-600 mr-1">
                     {post.user.username}
                   </span>
                   {post.caption}
@@ -89,9 +90,7 @@ const Search = () => {
           </div>
         ))}
       </div>
-      <div className="p-10">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

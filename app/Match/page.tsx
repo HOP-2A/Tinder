@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FirstStep } from "./FirstStep";
 import { placetype, SecondStep } from "./SecondStep";
 import { ThirdStep } from "./ThirdStep";
+import { Footer } from "react-day-picker";
 
 export type MatchUser = {
   id: string;
@@ -114,6 +115,7 @@ export default function Match() {
           />
         </div>
       )}
+      <Footer />
     </div>
   );
 }

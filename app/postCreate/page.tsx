@@ -15,6 +15,7 @@ import {
 import { upload } from "@vercel/blob/client";
 import { useUser } from "@clerk/nextjs";
 import { useAuth } from "@/provider/authProvider";
+import { Footer } from "../_components/Footer";
 
 export default function PostCreate() {
   const [file, setFile] = useState<File | null>(null);
@@ -23,11 +24,13 @@ export default function PostCreate() {
   const { user } = useAuth(clerkUser?.id);
   const [caption, setCaption] = useState("");
   const [imageurl, setImageurl] = useState("");
+
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
     setFile(selectedFile);
   };
+
   const uploadImage = async () => {
     if (!file) {
       toast.error("Please select an image first.");
@@ -40,97 +43,102 @@ export default function PostCreate() {
       });
       setImageurl(uploaded.url);
       toast.success("Image uploaded successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Image upload failed. Try again.");
     }
   };
+
   const postUusgeh = async (userId: string) => {
     if (!imageurl) {
       toast.error("Please upload an image first.");
       return;
     }
+
     const response = await fetch("/api/Post", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         images: imageurl,
         caption,
-        userId: userId,
+        userId,
       }),
     });
+
     if (response.ok) {
       toast.success("Posted successfully!");
       router.push("/");
     } else {
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Something went wrong.");
     }
   };
+
   return (
-    <div>
-      {" "}
-      <h1 className="text-4xl font-bold text-cyan-400 drop-shadow-neon fixed top-4 left-6 z-50">
-        LUMINATE
+    <div className="min-h-screen bg-pink-50 flex flex-col items-center px-4 py-10">
+      {/* Page Title */}
+      <h1 className="text-4xl font-extrabold text-pink-600 mb-2">
+        Create a New Post 💕
       </h1>
-      <div className="pt-20 text-center text-3xl font-semibold text-yellow-400">
-        Create a <span className="text-pink-400">New Post</span>
-      </div>
-      <Card className="w-full max-w-2xl mt-10 backdrop-blur-md bg-white/5 border border-white/10 rounded-xl shadow-neon">
-        <CardHeader>
-          <CardTitle className="text-cyan-400 text-center text-2xl">
-            Upload Your Image
-          </CardTitle>
-          <CardDescription className="text-center text-gray-300">
-            Share your creativity with the world 🌍
+      <p className="text-gray-500 mb-8 text-center">
+        Share your favorite moments with the community
+      </p>
+
+      {/* Card */}
+      <Card className="w-full max-w-xl bg-white rounded-2xl shadow-lg border border-pink-100">
+        <CardHeader className="text-center">
+          <CardTitle className="text-pink-600 text-2xl">Upload Image</CardTitle>
+          <CardDescription className="text-gray-500">
+            Choose a photo and add a caption
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-5">
-          <div className="flex items-center gap-4">
+        <CardContent className="space-y-6">
+          {/* Upload */}
+          <div className="flex flex-col sm:flex-row gap-3 items-center">
             <Input
               type="file"
               accept="image/*"
               onChange={handleFile}
-              className="bg-transparent text-white border-cyan-400"
+              className="border-pink-200 focus:border-pink-400"
             />
             <Button
               onClick={uploadImage}
-              className="bg-cyan-500 hover:bg-pink-500 transition-all"
+              className="bg-pink-500 hover:bg-pink-600 text-white w-full sm:w-auto"
             >
               Upload
             </Button>
           </div>
 
+          {/* Preview */}
           {imageurl && (
-            <div className="mt-6 flex justify-center">
+            <div className="flex justify-center">
               <img
                 src={imageurl}
-                alt="Uploaded Preview"
-                className="rounded-xl w-full max-w-md h-[300px] object-cover border border-cyan-400 shadow-inner"
+                alt="Preview"
+                className="rounded-xl w-full max-w-md h-[280px] object-cover shadow-md"
               />
             </div>
           )}
 
+          {/* Caption */}
           <textarea
             placeholder="Write a caption..."
-            onChange={(e) => setCaption(e.target.value)}
             value={caption}
-            name="caption"
+            onChange={(e) => setCaption(e.target.value)}
             rows={4}
-            className="w-full bg-[#121023] text-cyan-300 p-3 rounded-lg border border-cyan-600 focus:border-pink-500 focus:ring-pink-500 transition-shadow duration-300 resize-none"
+            className="w-full border border-pink-200 rounded-xl p-3 focus:ring-2 focus:ring-pink-300 focus:outline-none resize-none"
           />
         </CardContent>
 
         <CardFooter>
           <Button
             onClick={() => postUusgeh(user?.id as string)}
-            className="w-full bg-cyan-600 hover:bg-pink-600 shadow-neon transition-transform duration-300 hover:scale-105"
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white text-lg rounded-xl"
           >
             Create Post
           </Button>
         </CardFooter>
       </Card>
+      <Footer />
     </div>
   );
 }
