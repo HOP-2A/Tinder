@@ -26,8 +26,8 @@ export type MatchItem = {
 
 export default function Match() {
   const [otherUser, setOtherUser] = useState<MatchUser | null>(null);
+  const [chosenUser, setChosenUser] = useState<MatchUser | null>(null);
   const [matches, setMatches] = useState<MatchItem[]>([]);
-  const [myMatches, setMyMatches] = useState<MatchItem[]>([]);
   const { user: clerkUser } = useUser();
   const { user } = useAuth(clerkUser?.id) as { user: MatchUser | null };
   const [selectedPlace, setSelectedPlace] = useState<placetype | null>(null);
@@ -40,7 +40,10 @@ export default function Match() {
       try {
         const res = await fetch("/api/Matches");
         const data: MatchItem[] = await res.json();
-        setMatches(data);
+        const filteredData = data.filter(
+          (item) => item.userA.id === user.id || item.userB.id === user.id
+        );
+        setMatches(filteredData);
       } catch (err) {
         console.error(err);
       }
@@ -48,14 +51,6 @@ export default function Match() {
 
     fetchMatches();
   }, [user?.id]);
-
-  useEffect(() => {
-    const mnyhMatches = matches.filter(
-      (item) => item.userA.id === user?.id || item.userB.id === user?.id
-    );
-    setMyMatches(mnyhMatches);
-  }, [matches, user?.id]);
-
   const PlanDate = async () => {
     if (!otherUser || !selectedPlace) return;
     const response = await fetch("/api/Dates", {
@@ -73,10 +68,11 @@ export default function Match() {
     }
   };
 
-  if (!myMatches.length) {
+  if (!matches.length) {
     return (
       <div className="min-h-screen bg-pink-50 py-8 text-center bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200 flex items-center justify-center">
-        No matches yet
+        <div>No matches yet</div>
+        <Footer />
       </div>
     );
   }
@@ -89,27 +85,22 @@ export default function Match() {
             setStep={setStep}
             otherUser={otherUser}
             setOtherUser={setOtherUser}
-            myMatches={myMatches}
+            matches={matches}
+            setChosenUser={setChosenUser}
+            chosenUser={chosenUser}
           />
         </div>
       )}
       {step === 2 && (
         <div>
-          <SecondStep
-            setStep={setStep}
-            otherUser={otherUser}
-            myMatches={myMatches}
-            setSelectedPlace={setSelectedPlace}
-            selectedPlace={selectedPlace}
-          />
+          <SecondStep setStep={setStep} setSelectedPlace={setSelectedPlace} />
         </div>
       )}
       {step === 3 && (
         <div>
           <ThirdStep
             setStep={setStep}
-            otherUser={otherUser}
-            myMatches={myMatches}
+            chosenUser={chosenUser}
             selectedPlace={selectedPlace}
             planDate={PlanDate}
           />

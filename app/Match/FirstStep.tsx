@@ -5,19 +5,24 @@ import { Footer } from "../_components/Footer";
 
 export const FirstStep = ({
   setStep,
-  myMatches,
+  matches,
+  chosenUser,
   setOtherUser,
+  setChosenUser,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   otherUser?: MatchUser | null;
-  myMatches: MatchItem[] | null;
+  matches: MatchItem[] | null;
+  chosenUser?: MatchUser | null;
   setOtherUser: React.Dispatch<React.SetStateAction<MatchUser | null>>;
+  setChosenUser: React.Dispatch<React.SetStateAction<MatchUser | null>>;
 }) => {
   const { user: clerkUser } = useUser();
   const { user } = useAuth(clerkUser?.id) as { user: MatchUser | null };
   const getOtherUser = (match: MatchItem) => {
     return match.userA.id === user?.id ? match.userB : match.userA;
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200 py-8">
       <div className="max-w-md mx-auto">
@@ -25,13 +30,16 @@ export const FirstStep = ({
           Your Matches
         </h1>
         <ul className="space-y-4">
-          {myMatches?.map((match) => {
+          {matches?.map((match) => {
             const otherUser = getOtherUser(match);
             setOtherUser(otherUser);
             return (
-              <li
+              <div
                 key={match.id}
                 className="flex items-center justify-between p-4 bg-white rounded-xl shadow hover:shadow-md transition "
+                onClick={() => {
+                  setChosenUser(otherUser);
+                }}
               >
                 <div className="flex items-center gap-4">
                   <img
@@ -49,7 +57,7 @@ export const FirstStep = ({
                 >
                   Choose Place
                 </button>
-              </li>
+              </div>
             );
           })}
         </ul>
