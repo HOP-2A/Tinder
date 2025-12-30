@@ -3,7 +3,6 @@
 import { useAuth } from "@/provider/authProvider";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Footer } from "../_components/Footer";
 
 type DateUser = {
@@ -32,7 +31,6 @@ type DateType = {
 };
 
 export default function DatesPage() {
-  const router = useRouter();
   const [dates, setDates] = useState<DateType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { user: clerkUser } = useUser();
@@ -64,7 +62,7 @@ export default function DatesPage() {
   }, [currentUserId]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-300 via-peach-400 to-mauve-200 py-8 px-4 flex flex-col items-center">
+    <div className="min-h-screen bg-linear-to-b from-rose-300 via-peach-400 to-mauve-200 py-8 px-4 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-8 text-center text-pink-700">
         My Dates
       </h1>
@@ -107,7 +105,13 @@ export default function DatesPage() {
                   )}
                   <p
                     className="font-medium text-pink-500 mb-3 truncate underline cursor-pointer hover:text-pink-700"
-                    onClick={() => router.push(date.place!.location)}
+                    onClick={() =>
+                      window.open(
+                        date.place.location,
+                        "_blank",
+                        "noopener,noreferrer"
+                      )
+                    }
                   >
                     {date.place.facebook}
                   </p>

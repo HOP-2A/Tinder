@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MatchItem, MatchUser } from "./page";
+import { MatchUser } from "./page";
 import { placetype } from "./SecondStep";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -11,13 +11,12 @@ import { format } from "date-fns";
 
 export const ThirdStep = ({
   setStep,
-  otherUser,
   selectedPlace,
+  chosenUser,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  otherUser?: MatchUser | null;
-  myMatches: MatchItem[] | null;
   selectedPlace?: placetype | null;
+  chosenUser?: MatchUser | null;
   planDate?: () => Promise<void>;
 }) => {
   const router = useRouter();
@@ -27,13 +26,13 @@ export const ThirdStep = ({
   const [inputValue, setInputValue] = useState<string>("");
 
   const PlanDate = async () => {
-    if (!day || !otherUser || !selectedPlace) return;
+    if (!day || !chosenUser || !selectedPlace) return;
     const response = await fetch("/api/Dates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userA: user?.id,
-        userB: otherUser.id,
+        userB: chosenUser!.id,
         place: selectedPlace.id,
         message: inputValue,
       }),

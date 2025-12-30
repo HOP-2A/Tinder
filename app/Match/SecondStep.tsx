@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MatchItem, MatchUser } from "./page";
 import { MoveRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Footer } from "../_components/Footer";
@@ -25,10 +24,7 @@ export const SecondStep = ({
   setSelectedPlace,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  otherUser?: MatchUser | null;
-  myMatches: MatchItem[] | null;
   setSelectedPlace: React.Dispatch<React.SetStateAction<placetype | null>>;
-  selectedPlace: placetype | null;
 }) => {
   const [places, setPlaces] = useState<placetype[]>([]);
   useEffect(() => {
