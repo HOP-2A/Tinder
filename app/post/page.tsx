@@ -43,7 +43,10 @@ const Search = () => {
             className="bg-white rounded-2xl shadow-md border border-pink-100 overflow-hidden"
           >
             <div className="flex items-center gap-3 p-4">
-              <div className="w-11 h-11 rounded-full overflow-hidden bg-pink-100 flex items-center justify-center">
+              <div
+                className="w-11 h-11 rounded-full overflow-hidden bg-pink-100 flex items-center justify-center cursor-pointer"
+                onClick={() => push(`/${post.user.id}`)}
+              >
                 {post.user.profilePic ? (
                   <img
                     src={post.user.profilePic.replace(/^"|"$/g, "")}
@@ -58,7 +61,10 @@ const Search = () => {
               </div>
 
               <div>
-                <p className="font-semibold text-pink-600 text-sm">
+                <p
+                  className="font-semibold text-pink-600 text-sm cursor-pointer"
+                  onClick={() => push(`/${post.user.id}`)}
+                >
                   {post.user.username}
                 </p>
                 <p className="text-xs text-gray-400">
