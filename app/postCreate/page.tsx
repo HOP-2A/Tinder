@@ -74,7 +74,6 @@ export default function PostCreate() {
 
   return (
     <div className="min-h-screen bg-pink-50 flex flex-col items-center px-4 py-10">
-      {/* Page Title */}
       <h1 className="text-4xl font-extrabold text-pink-600 mb-2">
         Create a New Post 💕
       </h1>
@@ -82,7 +81,6 @@ export default function PostCreate() {
         Share your favorite moments with the community
       </p>
 
-      {/* Card */}
       <Card className="w-full max-w-xl bg-white rounded-2xl shadow-lg border border-pink-100">
         <CardHeader className="text-center">
           <CardTitle className="text-pink-600 text-2xl">Upload Image</CardTitle>
@@ -92,7 +90,6 @@ export default function PostCreate() {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {/* Upload */}
           <div className="flex flex-col sm:flex-row gap-3 items-center">
             <Input
               type="file"
@@ -108,7 +105,6 @@ export default function PostCreate() {
             </Button>
           </div>
 
-          {/* Preview */}
           {imageurl && (
             <div className="flex justify-center">
               <img
@@ -119,7 +115,6 @@ export default function PostCreate() {
             </div>
           )}
 
-          {/* Caption */}
           <textarea
             placeholder="Write a caption..."
             value={caption}
