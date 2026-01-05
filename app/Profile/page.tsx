@@ -5,6 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Footer } from "../_components/Footer";
 import { User } from "../page";
+import { useAuth } from "@/provider/authProvider";
+import { useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 type Post = {
   user: User;
@@ -23,53 +26,53 @@ type usertype = {
   username: string;
 };
 
-export default function Otheruserprofile() {
+export default function MyProfile() {
   const { push } = useRouter();
-  const [user, setUser] = useState<usertype>();
-  const params = useParams();
-  const userId = params.userId as string;
+  const [myData, setMyData] = useState<usertype>();
+  const { user: clerkUser } = useUser();
+  const { user } = useAuth(clerkUser?.id);
+  const userId = user?.id;
 
   useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(`/api/User/${userId}`);
+    const getMyData = async () => {
+      const response = await fetch("/api/User/userprof", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userId,
+        }),
+      });
       const data = await response.json();
-      setUser(data.message);
+      setMyData(data.user);
     };
-    getUser();
+    getMyData();
   }, [userId]);
-
   return (
     <div className="min-h-screen bg-pink-50">
       <div className="bg-white shadow-sm border-b border-pink-100">
         <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col items-center text-center">
           <Avatar className="h-[140px] w-[140px] shadow-md mb-4">
-            <AvatarImage src={user?.profilePic} />
+            <AvatarImage src={myData?.profilePic} />
             <AvatarFallback className="text-xl">
-              {user?.username?.[0]}
+              {myData?.username?.[0]}
             </AvatarFallback>
           </Avatar>
 
           <h1 className="text-3xl font-extrabold text-pink-600">
-            {user?.username}
+            {myData?.username}
           </h1>
-
-          {/* {user?.hobbies?.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2 mt-4">
-              {user.hobbies.map((hobby, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 text-sm rounded-full bg-pink-100 text-pink-600"
-                >
-                  {hobby}
-                </span>
-              ))}
-            </div>
-          )} */}
+          <Button
+            className="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-pink-500 hover:to-cyan-500 
+          text-white font-semibold rounded-xl px-6 py-3 shadow-neon transition-all duration-300"
+            onClick={() => push("/editProfile")}
+          >
+            EDIT PROFILE
+          </Button>
         </div>
       </div>
 
       <div className="max-w-md mx-auto space-y-8 px-4 py-10">
-        {user?.posts?.map((post) => (
+        {myData?.posts?.map((post) => (
           <div
             key={post.id}
             className="bg-white rounded-2xl shadow-md border border-pink-100 overflow-hidden"
@@ -79,8 +82,8 @@ export default function Otheruserprofile() {
                 className="h-10 w-10 cursor-pointer"
                 onClick={() => push(`/${post.user.id}`)}
               >
-                <AvatarImage src={user.profilePic} />
-                <AvatarFallback>{user.username[0]}</AvatarFallback>
+                <AvatarImage src={myData?.profilePic} />
+                <AvatarFallback>{myData?.username[0]}</AvatarFallback>
               </Avatar>
 
               <div>
@@ -88,7 +91,7 @@ export default function Otheruserprofile() {
                   className="font-semibold text-pink-600 text-sm cursor-pointer"
                   onClick={() => push(`/${post.user.id}`)}
                 >
-                  {user.username}
+                  {myData?.username}
                 </p>
                 <p className="text-xs text-gray-400">
                   {new Date(post.createdAt).toLocaleDateString()}
@@ -110,7 +113,7 @@ export default function Otheruserprofile() {
               <div className="px-4 pb-5 pt-3">
                 <p className="text-sm text-gray-700 leading-relaxed">
                   <span className="font-semibold text-pink-600 mr-1">
-                    {user.username}
+                    {myData?.username}
                   </span>
                   {post.caption}
                 </p>
@@ -119,7 +122,6 @@ export default function Otheruserprofile() {
           </div>
         ))}
       </div>
-
       <Footer />
     </div>
   );
