@@ -39,10 +39,12 @@ export const Header = () => {
   return (
     <div className="flex justify-between ">
       <div className="flex gap-10">
-        <h1 className="font-semibold text-4xl text-white ">LUMINATE</h1>{" "}
+        <h1 className="font-extrabold text-5xl md:text-6xl text-pink-600 drop-shadow-sm">
+          LUMINATE
+        </h1>{" "}
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <h1 className="font-semibold text-2xl text-white ">CONTACT</h1>{" "}
+            <h1 className="font-semibold text-2xl  text-pink-600 ">CONTACT</h1>{" "}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>CREATORS AND DEVELOPERS:</DropdownMenuLabel>
@@ -79,7 +81,7 @@ export const Header = () => {
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <h1 className="font-semibold text-2xl text-white ">CREDITS</h1>{" "}
+            <h1 className="font-semibold text-2xl  text-pink-600 ">CREDITS</h1>{" "}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>MADE IN :</DropdownMenuLabel>
@@ -133,20 +135,6 @@ export const Header = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
-      <div className="text-white flex gap-3 ">
-        {" "}
-        <SignedOut>
-          <SignInButton />
-          <SignUpButton>
-            <button className="bg-[#7e5eff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer hover:scale-110">
-              Sign Up
-            </button>
-          </SignUpButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
       </div>
     </div>
   );
