@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { UserJSON, UserWebhookEvent } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { number } from "framer-motion";
 
 export async function POST(req: Request) {
   const WH_SECRET = process.env.CLERK_WEBHOOK_SECRET;

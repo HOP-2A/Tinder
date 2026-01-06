@@ -22,7 +22,7 @@ model User {
   username   String   @unique @default(nanoid())
   email      String   @unique
   profilePic String?
-  age        String
+  age        String?
   hobbies    String[]
   blocked    String[]
   createdAt  DateTime @default(now())
