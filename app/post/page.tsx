@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CirclePlus, Heart, MessageCircle, Share } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import { User } from "../page";
 import { Footer } from "../_components/Footer";
 import { useRouter } from "next/navigation";
@@ -30,21 +30,24 @@ const Search = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-pink-50">
-      {" "}
-      <div className="flex justify-end pr-5 pt-5">
-        {" "}
-        <CirclePlus onClick={() => push("/postCreate")} />
+    <div className="min-h-screen py-6">
+      <div className="flex justify-end pr-6 pt-4">
+        <CirclePlus
+          onClick={() => push("/postCreate")}
+          className="w-10 h-10 p-2 text-pink-500 bg-white/80 backdrop-blur-md rounded-full shadow-lg hover:scale-110 transition transform cursor-pointer"
+        />
       </div>
-      <div className="w-full max-w-md mx-auto space-y-8 py-10 px-3">
+
+      <div className="w-full max-w-md mx-auto space-y-8 py-6 px-3">
         {posts?.map((post) => (
           <div
             key={post.id}
-            className="bg-white rounded-2xl shadow-md border border-pink-100 overflow-hidden"
+            className="bg-white/70 backdrop-blur-md rounded-3xl shadow-lg border border-white/30 overflow-hidden
+                     transition-transform duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
           >
             <div className="flex items-center gap-3 p-4">
               <div
-                className="w-11 h-11 rounded-full overflow-hidden bg-pink-100 flex items-center justify-center cursor-pointer"
+                className="w-12 h-12 rounded-full overflow-hidden bg-pink-100 flex items-center justify-center ring-1 ring-pink-200 cursor-pointer"
                 onClick={() => push(`/${post.user.id}`)}
               >
                 {post.user.profilePic ? (
@@ -62,7 +65,7 @@ const Search = () => {
 
               <div>
                 <p
-                  className="font-semibold text-pink-600 text-sm cursor-pointer"
+                  className="font-semibold text-pink-600 text-sm cursor-pointer hover:underline"
                   onClick={() => push(`/${post.user.id}`)}
                 >
                   {post.user.username}
@@ -74,7 +77,7 @@ const Search = () => {
             </div>
 
             {post.images?.length > 0 && (
-              <div className="relative w-full aspect-square bg-pink-100">
+              <div className="relative w-full aspect-square bg-gray-100">
                 <img
                   src={post.images[0]}
                   alt="post"
@@ -84,7 +87,7 @@ const Search = () => {
             )}
 
             {post.caption && (
-              <div className="px-4 pb-5 pt-2">
+              <div className="px-4 pb-5 pt-3">
                 <p className="text-sm text-gray-700 leading-relaxed">
                   <span className="font-semibold text-pink-600 mr-1">
                     {post.user.username}
@@ -96,6 +99,7 @@ const Search = () => {
           </div>
         ))}
       </div>
+
       <Footer />
     </div>
   );
