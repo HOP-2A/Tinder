@@ -62,8 +62,8 @@ export default function DatesPage() {
   }, [currentUserId]);
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-rose-300 via-peach-400 to-mauve-200 py-8 px-4 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-8 text-center text-pink-700">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 py-10 px-4 flex flex-col items-center">
+      <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-center text-gray-900 drop-shadow-sm">
         My Dates
       </h1>
 
@@ -78,33 +78,36 @@ export default function DatesPage() {
             return (
               <div
                 key={date.id}
-                className="bg-pink-50 rounded-2xl shadow-lg w-96 h-96 flex flex-col items-center p-6 transition hover:scale-105 hover:shadow-2xl"
+                className="bg-white/70 backdrop-blur-md rounded-3xl shadow-lg w-80 h-96
+                         flex flex-col items-center p-6 transition-transform duration-300
+                         hover:scale-105 hover:shadow-2xl border border-white/30"
               >
                 <div className="flex flex-col items-center mb-4">
                   {otherUser.profilePic ? (
                     <img
                       src={otherUser.profilePic}
                       alt={otherUser.username}
-                      className="w-24 h-24 rounded-full object-cover mb-3 border-2 border-pink-200"
+                      className="w-24 h-24 rounded-full object-cover mb-3 border-2 border-pink-200 shadow-sm"
                     />
                   ) : (
-                    <div className="w-24 h-24 rounded-full bg-pink-200 mb-3 flex items-center justify-center">
-                      <span className="text-pink-500 text-2xl">?</span>
+                    <div className="w-24 h-24 rounded-full bg-pink-200 mb-3 flex items-center justify-center shadow-sm">
+                      <span className="text-pink-600 text-2xl">?</span>
                     </div>
                   )}
-                  <p className="text-xl font-semibold text-pink-700">
+                  <p className="text-xl font-semibold text-gray-900">
                     {otherUser.username}
                   </p>
                 </div>
 
-                <div className="flex flex-col items-center ">
+                <div className="flex flex-col items-center gap-3">
                   {date.message && (
-                    <p className="italic text-pink-600 mb-3 text-center truncate">
+                    <p className="italic text-gray-700 text-center truncate">
                       {date.message}
                     </p>
                   )}
+
                   <p
-                    className="font-medium text-pink-500 mb-3 truncate underline cursor-pointer hover:text-pink-700"
+                    className="font-medium text-pink-500 underline cursor-pointer hover:text-pink-700 transition"
                     onClick={() =>
                       window.open(
                         date.place.location,
@@ -115,10 +118,12 @@ export default function DatesPage() {
                   >
                     {date.place.facebook}
                   </p>
+
                   {date.place.Pictures[0] && (
                     <img
                       src={date.place.Pictures[0]}
-                      className="w-40 h-26 object-cover rounded-lg border-2 border-pink-200 "
+                      alt={date.place.facebook}
+                      className="w-40 h-28 object-cover rounded-xl border border-gray-200 shadow-sm"
                     />
                   )}
                 </div>
@@ -127,8 +132,11 @@ export default function DatesPage() {
           })}
         </div>
       ) : (
-        <p className="text-center text-pink-400 mt-10">No dates found.</p>
+        <div className="flex-1 flex justify-center items-center relative z-10">
+          <div className="w-16 h-16 border-4 border-white/30 border-t-pink-400 rounded-full animate-spin"></div>
+        </div>
       )}
+
       <Footer />
     </div>
   );

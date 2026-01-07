@@ -1,14 +1,7 @@
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { MoveRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Footer } from "../_components/Footer";
+
 export type placetype = {
   id: string;
   Pictures: string[];
@@ -27,6 +20,7 @@ export const SecondStep = ({
   setSelectedPlace: React.Dispatch<React.SetStateAction<placetype | null>>;
 }) => {
   const [places, setPlaces] = useState<placetype[]>([]);
+
   useEffect(() => {
     const getplaces = async () => {
       const response = await fetch("/api/Places");
@@ -35,61 +29,58 @@ export const SecondStep = ({
     };
     getplaces();
   }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-300 via-peach-400  flex flex-col gap-10">
-      <h1 className="text-center pt-10 text-4xl font-extrabold text-pink-500 drop-shadow-sm">
-        Choose Your Perfect Date Place 💕
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 py-12 flex flex-col items-center">
+      <h1 className="text-center text-3xl md:text-4xl font-extrabold text-gray-900 drop-shadow-sm mb-10">
+        Choose Your Perfect Date Spot 💖
       </h1>
 
-      <div className="flex flex-wrap justify-center gap-5 px-6 ">
+      <div className="flex flex-wrap justify-center gap-6 px-6">
         {places.map((place) => (
-          <Card
+          <div
             key={place.id}
+            className="w-[260px] cursor-pointer rounded-3xl bg-white border border-gray-200 shadow-lg 
+                     hover:shadow-[0_20px_40px_rgba(255,182,193,0.3)] transition-all duration-300 transform hover:-translate-y-3"
             onClick={() => {
               setStep(3);
               setSelectedPlace(place);
             }}
-            className="w-[260px] cursor-pointer border border-pink-100
-                       rounded-2xl shadow-md transition-all duration-300
-                       hover:shadow-xl hover:-translate-y-2 bg-rose-50"
           >
-            <CardFooter className="p-0">
+            <div className="relative">
               <img
                 src={place.Pictures[0]}
                 alt="Place image"
-                className="w-full h-[160px] object-cover rounded-t-2xl"
+                className="w-full h-[160px] object-cover rounded-t-3xl"
               />
-            </CardFooter>
+              <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-black/25 to-transparent rounded-t-3xl"></div>
+            </div>
 
-            <CardHeader className="space-y-2">
-              <CardTitle className="text-lg font-semibold text-pink-600">
+            <div className="px-4 pt-4 space-y-2">
+              <h2 className="text-lg font-bold text-gray-900">
                 {place.facebook}
-              </CardTitle>
+              </h2>
 
-              <div className="flex flex-wrap gap-1">
-                {place.categories.map((category, index) => (
+              <div className="flex flex-wrap gap-2">
+                {place.categories.map((category, idx) => (
                   <span
-                    key={index}
-                    className="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full"
+                    key={idx}
+                    className="text-xs px-2 py-1 rounded-full bg-pink-50 text-pink-600 font-medium"
                   >
                     {category}
                   </span>
                 ))}
               </div>
-            </CardHeader>
+            </div>
 
-            <CardContent className="text-sm text-gray-600">
-              📞 {place.phone}
-            </CardContent>
+            <p className="text-sm text-gray-600 px-4 py-2">📞 {place.phone}</p>
 
-            <CardAction className="flex justify-end px-4 pb-4 text-pink-500">
-              <MoveRight className="hover:translate-x-1 transition" />
-            </CardAction>
-          </Card>
+            <div className="flex justify-end px-4 pb-4 text-pink-500">
+              <MoveRight className="hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
         ))}
       </div>
-
-      <Footer />
     </div>
   );
 };

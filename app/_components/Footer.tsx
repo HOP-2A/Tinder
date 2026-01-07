@@ -1,20 +1,48 @@
 "use client";
 
-import { Aperture, HeartPlus } from "lucide-react";
-import { SearchCheck } from "lucide-react";
-import { Atom } from "lucide-react";
-import { CircleUser } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { MessageCircleHeart } from "lucide-react";
+import {
+  Aperture,
+  HeartPlus,
+  Atom,
+  CircleUser,
+  MessageCircleHeart,
+} from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+
 export const Footer = () => {
   const { push } = useRouter();
+  const pathname = usePathname();
+
+  const iconClass = (path: string) =>
+    `w-6 h-6 transition-colors duration-200 ${
+      pathname === path ? "text-rose-500" : "text-gray-400 hover:text-rose-500"
+    }`;
+
   return (
-    <div className="flex justify-around bottom-0 fixed left-0 right-0 p-4 bg-gradient-to-t from-rose-300 to-peach-200 border-t border-pink-200 ">
-      <HeartPlus onClick={() => push("/")} />
-      <Aperture onClick={() => push("/post")} />
-      <Atom onClick={() => push("/Match")} />
-      <MessageCircleHeart onClick={() => push("/Dates")} />
-      <CircleUser onClick={() => push("/Profile")} />
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-t border-gray-200">
+      <div className="max-w-md mx-auto flex justify-around items-center py-3 px-4">
+        <Aperture
+          className={iconClass("/post")}
+          onClick={() => push("/post")}
+        />
+        <Atom className={iconClass("/Match")} onClick={() => push("/Match")} />
+
+        <div
+          onClick={() => push("/")}
+          className="w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center shadow-md transform transition-transform duration-200 hover:scale-110"
+        >
+          <HeartPlus className="text-white w-6 h-6" />
+        </div>
+
+        <MessageCircleHeart
+          className={iconClass("/Dates")}
+          onClick={() => push("/Dates")}
+        />
+        <CircleUser
+          className={iconClass("/Profile")}
+          onClick={() => push("/Profile")}
+        />
+      </div>
     </div>
   );
 };
