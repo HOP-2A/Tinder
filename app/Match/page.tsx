@@ -81,18 +81,16 @@ export default function Match() {
         </div>
       ) : matches.length === 0 ? (
         <div className="flex-1 flex flex-col justify-center items-center relative z-10">
-          <Footer/>
+          <Footer />
         </div>
       ) : (
         <div className="flex-1 relative z-10">
           {step === 1 && (
             <FirstStep
               setStep={setStep}
-              otherUser={otherUser}
               setOtherUser={setOtherUser}
               matches={matches}
               setChosenUser={setChosenUser}
-              chosenUser={chosenUser}
             />
           )}
           {step === 2 && (
